@@ -25,4 +25,18 @@ describe "LayoutLinks" do
       get '/signup'
 	  response.should have_selector('title', :content => "Ruby on rail tutorial sample app | Sign up");
   end  
+  
+  describe "When signed in" do
+    before (:each) do
+      @user = Factory(:user)
+      visit signin_path
+      fill_in :email, :with => @user.email
+      fill_in :password, :with => @user.password
+      click_button
+    end
+    
+    it "should have signout link" do
+      response.should have_selector("a", :href => signout_path, :content => "Sign out")
+    end
+  end
 end

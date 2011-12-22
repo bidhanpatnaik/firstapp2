@@ -42,5 +42,57 @@ describe UsersController do
       get 'new'
       response.should have_selector("title", :content => "Ruby on rail tutorial sample app | Sign up")
     end
-  
+    
+    
+    describe "POST create" do
+       describe "failure" do
+         before (:each) do
+           @attr = {:name => "", :email =>"", :password => "", :confirmation_password => ""}
+         end
+         
+         it "should not create user" do
+           lambda do
+             post :create, :user => @attr
+           end.should_not change(User, :count)
+         end
+         
+         it "should have the right title" do
+           post :create, :user => @attr
+           response.should have_selector("title", :content => "Sign up")
+         end
+         it "should render the 'new' page" do
+           post :create, :user => @attr
+           response.should render_template("new")
+         end
+       end
+    end
+    
+    describe "Success " do
+      before (:each) do
+        @attr = {:name => "K Mishara", :email =>"kmishra@examples.com", :password => "foobar", :confirmation_password => "foobar"}
+      end
+      
+      it "should sign the user in" do
+        post :create, :user => @attr
+        controller.current_user == @user
+        controller.should be_signed_in
+      end
+      
+    end #describe "Success " do
+	
+	describe "Get 'edit' " do
+	
+	  before (:each) do
+	    @user = Factory(user)
+		test_sign_in(user)
+	  end	
+	  
+	  it "shoud be successful" do
+	    get :edit :id => @user
+		response should_be_success
+	  end
+	  
+	  
+	end
+
 end
