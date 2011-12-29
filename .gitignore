@@ -2,7 +2,8 @@
 db/*.sqlite3
 log/*.log
 tmp/
-.DS_Store*
+.DS_Store
 .sass-cache/
 .project
 *~
+lib/.DS_Store
